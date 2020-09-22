@@ -1,85 +1,101 @@
-import React, { Component } from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, Button, Breadcrumb, BreadcrumbItem, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { Control, LocalForm, Errors } from 'react-redux-form';
-import { Loading } from './LoadingComponent';
+import React, {Component} from 'react';
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    Button,
+    Breadcrumb,
+    BreadcrumbItem,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    Label,
+    Row,
+    Col
+} from 'reactstrap';
+import {Link} from 'react-router-dom';
+import {Control, LocalForm, Errors} from 'react-redux-form';
+import {Loading} from './LoadingComponent';
+import {baseUrl} from '../shared/baseUrl';
 
-    function RenderComments({comments, addComment, dishId}) {
-        if (comments != null) {
+function RenderComments({comments, addComment, dishId}) {
+    if (comments != null) {
 
-            const commentsList = comments.map((comment)=>{
+        const commentsList = comments.map((comment) => {
 
-                return(
-                    <li key={comment.id} >
-                        <div>
-                            <p>{comment.comment}</p>
-                            <p>--{comment.author},
-                                {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
-                        </div>
-                    </li>
-
-                )
-            })
-
-            return(
-                <div className="col-12 col-md-5 m-1">
-                    <h4>Comments</h4>
-                    <ul className="list-unstyled">
-                        {commentsList}
-                    </ul>
-                    <CommentForm dishId={dishId} addComment={addComment}></CommentForm>
-                </div>
-            )
-        }
-        else{
-            return(
-                <div>
-                </div>
-            )
-        }
-    }
-
-    function RenderDish({dish}) {
-        if(dish != null) {
             return (
-                <div>
-                    <Card>
-                        <CardImg width="100%" src={dish.image} alt={dish.name} />
-                        <CardBody>
-                            <CardTitle>{dish.name}</CardTitle>
-                            <CardText>{dish.description}</CardText>
-                        </CardBody>
-                    </Card>
-                </div>
-            )
-        }
-        else {
-            return (
-                <div></div>
-            );
-        }
-    }
+                <li key={comment.id}>
+                    <div>
+                        <p>{comment.comment}</p>
+                        <p>--{comment.author},
+                            {new Intl.DateTimeFormat('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: '2-digit'
+                            }).format(new Date(Date.parse(comment.date)))}</p>
+                    </div>
+                </li>
 
-    const DishDetail = (props) => {
-        if (props.isLoading) {
-            return(
-                <div className="container">
-                    <div className="row">
-                        <Loading />
-                    </div>
+            )
+        })
+
+        return (
+            <div className="col-12 col-md-5 m-1">
+                <h4>Comments</h4>
+                <ul className="list-unstyled">
+                    {commentsList}
+                </ul>
+                <CommentForm dishId={dishId} addComment={addComment}></CommentForm>
+            </div>
+        )
+    } else {
+        return (
+            <div>
+            </div>
+        )
+    }
+}
+
+function RenderDish({dish}) {
+    if (dish != null) {
+        return (
+            <div>
+                <Card>
+                    <CardImg top src={baseUrl + dish.image} alt={dish.name}/>
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            </div>
+        )
+    } else {
+        return (
+            <div></div>
+        );
+    }
+}
+
+const DishDetail = (props) => {
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading/>
                 </div>
-            );
-        }
-        else if (props.errMess) {
-            return(
-                <div className="container">
-                    <div className="row">
-                        <h4>{props.errMess}</h4>
-                    </div>
+            </div>
+        );
+    } else if (props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
                 </div>
-            );
-        }
-        else if (props.dish != null) {
+            </div>
+        );
+    } else if (props.dish != null) {
         return (
             <div className="container">
                 <div className="row">
@@ -90,20 +106,21 @@ import { Loading } from './LoadingComponent';
                     </Breadcrumb>
                     <div className="col-12">
                         <h3>{props.dish.name}</h3>
-                        <hr />
+                        <hr/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                        <RenderDish dish={props.dish} />
+                        <RenderDish dish={props.dish}/>
                     </div>
                     <div className="col-12 col-md-5 m-1">
                         <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id}/>
                     </div>
                 </div>
             </div>
-        );}
+        );
     }
+}
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
