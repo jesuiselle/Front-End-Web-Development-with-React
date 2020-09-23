@@ -20,7 +20,7 @@ import {Control, LocalForm, Errors} from 'react-redux-form';
 import {Loading} from './LoadingComponent';
 import {baseUrl} from '../shared/baseUrl';
 
-function RenderComments({comments, addComment, dishId}) {
+function RenderComments({comments, postComment, dishId}) {
     if (comments != null) {
 
         const commentsList = comments.map((comment) => {
@@ -47,7 +47,7 @@ function RenderComments({comments, addComment, dishId}) {
                 <ul className="list-unstyled">
                     {commentsList}
                 </ul>
-                <CommentForm dishId={dishId} addComment={addComment}></CommentForm>
+                <CommentForm dishId={dishId} postComment={postComment}></CommentForm>
             </div>
         )
     } else {
@@ -114,7 +114,7 @@ const DishDetail = (props) => {
                         <RenderDish dish={props.dish}/>
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id}/>
+                        <RenderComments comments={props.comments} postComment={props.postComment} dishId={props.dish.id}/>
                     </div>
                 </div>
             </div>
@@ -148,7 +148,7 @@ class CommentForm extends Component {
 
         this.toggleModal();
 
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
